@@ -1,0 +1,29 @@
+﻿@model CalendarOfVisits.Models.UserRoleViewModel
+
+<div class="container">
+    <h2>Assign role to @Model.UserName</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    <form method="post" asp-action="AssignRole">
+        <div class="form-group">
+            <label for="Role">Choose a role</label>
+            <select class="form-control" id="Role" name="Role" asp-for="@Model.Role" required>
+                <option value="">Choose a role</option>
+                <option value="Admin" >Admin</option>
+                <option value="Manager" >Manager</option>
+                <option value="Sales Representative" >Sales Representative</option>
+            </select>
+        </div>
+
+        <input type="hidden" name="UserId" value="@Model.UserId"/>
+
+        <button type="submit" class="btn btn-primary">Assign role</button>
+        <a href="@Url.Action("Index", "User")" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

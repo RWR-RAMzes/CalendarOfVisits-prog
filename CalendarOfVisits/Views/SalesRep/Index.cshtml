@@ -1,0 +1,63 @@
+﻿<h2>Sales Representatives</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sales Representative</th>
+            <th>Start date from</th>
+            <th>Start date to</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var salesRep in Model)
+    {
+        <tr>
+            <td>@salesRep</td>
+            <td>
+                <input type="date" name="fromDate" class="form-control" id="fromDate_@salesRep" required />
+            </td>
+            <td>
+                <input type="date" name="toDate" class="form-control" id="toDate_@salesRep" required />
+            </td>
+            <td>
+                <form method="post" action="@Url.Action("GeneratePdf", "SalesRep", new { username = salesRep })">
+                    <input type="hidden" name="salesRep" value="@salesRep" />
+                    <input type="hidden" name="fromDate" id="hiddenFromDate_@salesRep" />
+                    <input type="hidden" name="toDate" id="hiddenToDate_@salesRep" />
+                    <button type="submit" class="btn btn-primary" onclick="setDates('@salesRep')">Generate report</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<script>
+    window.onload = function () {
+        let today = new Date();
+        let lastMonth = new Date();
+        lastMonth.setMonth(today.getMonth() - 1);
+
+        let formatDate = (date) => {
+            let yyyy = date.getFullYear();
+            let mm = String(date.getMonth() + 1).padStart(2, '0');
+            let dd = String(date.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        };
+
+        let formattedToday = formatDate(today);
+        let formattedLastMonth = formatDate(lastMonth);
+
+        document.querySelectorAll('input[name="fromDate"]').forEach(input => input.value = formattedLastMonth);
+        document.querySelectorAll('input[name="toDate"]').forEach(input => input.value = formattedToday);
+    };
+
+    function setDates(salesRep) {
+        const fromDate = document.getElementById('fromDate_' + salesRep).value;
+        const toDate = document.getElementById('toDate_' + salesRep).value;
+
+        document.getElementById('hiddenFromDate_' + salesRep).value = fromDate;
+        document.getElementById('hiddenToDate_' + salesRep).value = toDate;
+    }
+</script>

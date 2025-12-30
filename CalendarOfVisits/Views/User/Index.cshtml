@@ -1,0 +1,40 @@
+﻿@model List<UserRoleViewModel>
+
+<div class="container">
+    <h2>Users</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Role</td>
+                <td>
+                    <a href="@Url.Action("AssignRole", "User", new { userId = user.UserId })" class="btn btn-primary">Assign role</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
